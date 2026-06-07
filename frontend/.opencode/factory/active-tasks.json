@@ -1,0 +1,94 @@
+{
+  "run_id": "feat-premium-web3-ui-20260607",
+  "branch_prefix": "factory/premium-web3-ui",
+  "lock": {
+    "locked": false,
+    "owner": null,
+    "since": null,
+    "reason": null
+  },
+  "stash_ref": "factory-auto-stash-20260607-160936",
+  "tasks": [
+    {
+      "id": "arch-001",
+      "agent": "architect",
+      "description": "Design UI component contract and theming spec for premium Web3 aesthetic",
+      "status": "in_progress",
+      "branch": "factory/premium-web3-ui/architect",
+      "inputs": ["PRODUCTION_PLAN.md", "app/page.tsx", "app/play/page.tsx", "app/components/ChessGame.tsx", "app/globals.css"],
+      "outputs": [".opencode/factory/ui-component-registry.json", ".opencode/factory/theme-spec.json"],
+      "depends_on": [],
+      "note": "Defines glassmorphism spec, color palette (Kubar Gold #F5A623), animation contracts, component props for ChessGame dashboard, landing page card interfaces"
+    },
+    {
+      "id": "ui-001",
+      "agent": "ui-designer",
+      "description": "Design component interfaces and Tailwind configs for premium Web3 UI",
+      "status": "blocked",
+      "branch": "factory/premium-web3-ui/ui-designer",
+      "inputs": [".opencode/factory/ui-component-registry.json", ".opencode/factory/theme-spec.json"],
+      "outputs": ["app/globals.css (updated)", "app/page.tsx (redesigned)", "app/play/page.tsx (redesigned)", "app/components/ChessGame.tsx (enhanced dashboard)"],
+      "depends_on": ["arch-001"]
+    },
+    {
+      "id": "front-001",
+      "agent": "frontend",
+      "description": "Implement premium Web3 UI components with framer-motion and lucide-react",
+      "status": "blocked",
+      "branch": "factory/premium-web3-ui/frontend",
+      "inputs": [".opencode/factory/ui-component-registry.json", ".opencode/factory/theme-spec.json", "ui-designer components"],
+      "outputs": ["Build-passing Next.js app with premium UI"],
+      "depends_on": ["ui-001"]
+    },
+    {
+      "id": "int-001",
+      "agent": "integrator",
+      "description": "Merge branches, validate build, wire components",
+      "status": "blocked",
+      "branch": "factory/premium-web3-ui/integrator",
+      "inputs": ["ui-designer outputs", "frontend outputs"],
+      "outputs": ["Merged branch with passing build"],
+      "depends_on": ["ui-001", "front-001"]
+    },
+    {
+      "id": "sec-001",
+      "agent": "security",
+      "description": "Audit for dependencies, secrets, XSS vectors in new UI",
+      "status": "blocked",
+      "branch": "factory/premium-web3-ui/security",
+      "inputs": ["integrator merged branch"],
+      "outputs": ["Security audit report"],
+      "depends_on": ["int-001"]
+    },
+    {
+      "id": "qa-001",
+      "agent": "qa",
+      "description": "Visual QA, edge-case testing, responsive verification",
+      "status": "blocked",
+      "branch": "factory/premium-web3-ui/qa",
+      "inputs": ["security approved branch"],
+      "outputs": ["QA sign-off report"],
+      "depends_on": ["sec-001"]
+    },
+    {
+      "id": "rev-001",
+      "agent": "reviewer",
+      "description": "Final convention, accessibility, and performance review",
+      "status": "blocked",
+      "branch": "factory/premium-web3-ui/reviewer",
+      "inputs": ["qa approved branch"],
+      "outputs": ["Review sign-off"],
+      "depends_on": ["qa-001"]
+    },
+    {
+      "id": "e2e-001",
+      "agent": "e2e-tester",
+      "description": "Visual verification of deployed premium UI on live site",
+      "status": "blocked",
+      "branch": "factory/premium-web3-ui/e2e-tester",
+      "inputs": ["reviewer approved branch"],
+      "outputs": ["E2E visual verification report with screenshots"],
+      "depends_on": ["rev-001"]
+    }
+  ]
+}

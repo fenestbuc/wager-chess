@@ -1,0 +1,152 @@
+{
+  "version": "1.0.0",
+  "name": "Wager Chess Premium Web3 Theme",
+  "description": "Complete theming specification for the Phase 2 UI overhaul of Wager Chess. Defines the Kubar Gold palette, glassmorphism system, gradients, typography, spacing, animation tokens, and responsive breakpoints.",
+  "cssVariables": {
+    "core": {
+      "--background": { "value": "#050507", "tailwind": "bg-background" },
+      "--foreground": { "value": "#F2F2F2", "tailwind": "text-foreground" },
+      "--muted": { "value": "#A1A1AA", "tailwind": "text-muted" },
+      "--primary": { "value": "#F5A623", "tailwind": "bg-primary text-primary" },
+      "--primary-hover": { "value": "#D48A1A", "tailwind": "hover:bg-primary-hover" },
+      "--secondary": { "value": "#8B5CF6", "tailwind": "bg-secondary text-secondary" },
+      "--secondary-hover": { "value": "#7C3AED", "tailwind": "hover:bg-secondary-hover" },
+      "--accent": { "value": "#3B82F6", "tailwind": "bg-accent text-accent" },
+      "--surface": { "value": "#0A0A0D", "tailwind": "bg-surface" },
+      "--surface-raised": { "value": "#131316", "tailwind": "bg-surface-raised" },
+      "--border": { "value": "rgba(255,255,255,0.08)", "tailwind": "border-border" }
+    },
+    "goldPalette": {
+      "--gold-50": { "value": "#FFF9EB", "tailwind": "text-gold-50 bg-gold-50" },
+      "--gold-100": { "value": "#FFEFC2", "tailwind": "text-gold-100 bg-gold-100" },
+      "--gold-200": { "value": "#FFE094", "tailwind": "text-gold-200 bg-gold-200" },
+      "--gold-300": { "value": "#FFD166", "tailwind": "text-gold-300 bg-gold-300" },
+      "--gold-400": { "value": "#F5A623", "tailwind": "text-gold-400 bg-gold-400" },
+      "--gold-500": { "value": "#E09520", "tailwind": "text-gold-500 bg-gold-500" },
+      "--gold-600": { "value": "#C07E1B", "tailwind": "text-gold-600 bg-gold-600" },
+      "--gold-700": { "value": "#9F6716", "tailwind": "text-gold-700 bg-gold-700" },
+      "--gold-800": { "value": "#7F5012", "tailwind": "text-gold-800 bg-gold-800" },
+      "--gold-900": { "value": "#5F3A0D", "tailwind": "text-gold-900 bg-gold-900" }
+    },
+    "shadows": {
+      "--shadow-gold": { "value": "0 0 20px rgba(245, 166, 35, 0.25)", "tailwind": "shadow-gold" },
+      "--shadow-gold-lg": { "value": "0 0 40px rgba(245, 166, 35, 0.35)", "tailwind": "shadow-gold-lg" },
+      "--shadow-glass": { "value": "0 8px 32px 0 rgba(0, 0, 0, 0.37), inset 0 0 0 1px rgba(255, 255, 255, 0.05)", "tailwind": "shadow-glass" }
+    }
+  },
+  "glassmorphism": {
+    "base": {
+      "background": "rgba(10, 10, 13, 0.65)",
+      "backdropFilter": "blur(16px) saturate(180%)",
+      "WebkitBackdropFilter": "blur(16px) saturate(180%)",
+      "border": "1px solid rgba(255, 255, 255, 0.08)",
+      "borderRadius": "16px",
+      "boxShadow": "0 8px 32px 0 rgba(0, 0, 0, 0.37), inset 0 0 0 1px rgba(255, 255, 255, 0.05)"
+    },
+    "hoverGlow": {
+      "boxShadow": "0 0 30px rgba(245, 166, 35, 0.15)",
+      "borderColor": "rgba(245, 166, 35, 0.30)",
+      "transition": "all 0.3s cubic-bezier(0.4, 0, 0.2, 1)"
+    },
+    "tailwindUtilityClass": "glass",
+    "definition": ".glass { background: rgba(10,10,13,0.65); backdrop-filter: blur(16px) saturate(180%); -webkit-backdrop-filter: blur(16px) saturate(180%); border: 1px solid rgba(255,255,255,0.08); border-radius: 16px; box-shadow: 0 8px 32px 0 rgba(0,0,0,0.37), inset 0 0 0 1px rgba(255,255,255,0.05); }"
+  },
+  "gradients": {
+    "heroBackground": {
+      "css": "radial-gradient(ellipse 80% 50% at 50% -20%, rgba(245, 166, 35, 0.15), transparent)",
+      "tailwind": "bg-[radial-gradient(ellipse_80%_50%_at_50%_-20%,rgba(245,166,35,0.15),transparent)]"
+    },
+    "cardOverlay": {
+      "css": "linear-gradient(145deg, rgba(255,255,255,0.05) 0%, rgba(255,255,255,0.01) 100%)",
+      "tailwind": "bg-gradient-to-br from-white/5 to-white/[0.01]"
+    },
+    "buttonPrimary": {
+      "css": "linear-gradient(135deg, #F5A623 0%, #E09520 100%)",
+      "tailwind": "bg-gradient-to-br from-gold-400 to-gold-500"
+    },
+    "buttonPrimaryHover": {
+      "css": "linear-gradient(135deg, #FFD166 0%, #F5A623 100%)",
+      "tailwind": "hover:bg-gradient-to-br hover:from-gold-300 hover:to-gold-400"
+    },
+    "surfaceFade": {
+      "css": "linear-gradient(180deg, #0A0A0D 0%, #050507 100%)",
+      "tailwind": "bg-gradient-to-b from-surface to-background"
+    }
+  },
+  "typography": {
+    "fontFamily": {
+      "sans": "var(--font-geist-sans), Arial, Helvetica, sans-serif",
+      "mono": "var(--font-geist-mono), ui-monospace, monospace"
+    },
+    "scale": [
+      { "name": "xs", "size": "0.75rem", "lineHeight": "1rem", "weight": 400, "tailwind": "text-xs" },
+      { "name": "sm", "size": "0.875rem", "lineHeight": "1.25rem", "weight": 400, "tailwind": "text-sm" },
+      { "name": "base", "size": "1rem", "lineHeight": "1.5rem", "weight": 400, "tailwind": "text-base" },
+      { "name": "lg", "size": "1.125rem", "lineHeight": "1.75rem", "weight": 500, "tailwind": "text-lg" },
+      { "name": "xl", "size": "1.25rem", "lineHeight": "1.75rem", "weight": 600, "tailwind": "text-xl" },
+      { "name": "2xl", "size": "1.5rem", "lineHeight": "2rem", "weight": 700, "tailwind": "text-2xl" },
+      { "name": "3xl", "size": "1.875rem", "lineHeight": "2.25rem", "weight": 700, "tailwind": "text-3xl" },
+      { "name": "4xl", "size": "2.25rem", "lineHeight": "2.5rem", "weight": 800, "tailwind": "text-4xl" },
+      { "name": "5xl", "size": "3rem", "lineHeight": "1", "weight": 800, "tailwind": "text-5xl" },
+      { "name": "6xl", "size": "3.75rem", "lineHeight": "1", "weight": 900, "tailwind": "text-6xl" },
+      { "name": "7xl", "size": "4.5rem", "lineHeight": "1", "weight": 900, "tailwind": "text-7xl" }
+    ]
+  },
+  "spacing": {
+    "tokens": [
+      { "name": "xs", "value": "0.25rem", "tailwind": "p-1 / gap-1" },
+      { "name": "sm", "value": "0.5rem", "tailwind": "p-2 / gap-2" },
+      { "name": "md", "value": "1rem", "tailwind": "p-4 / gap-4" },
+      { "name": "lg", "value": "1.5rem", "tailwind": "p-6 / gap-6" },
+      { "name": "xl", "value": "2rem", "tailwind": "p-8 / gap-8" },
+      { "name": "2xl", "value": "3rem", "tailwind": "p-12 / gap-12" },
+      { "name": "3xl", "value": "4rem", "tailwind": "p-16 / gap-16" },
+      { "name": "4xl", "value": "6rem", "tailwind": "p-24 / gap-24" }
+    ]
+  },
+  "animationTiming": {
+    "duration": {
+      "instant": { "ms": 0, "css": "0ms" },
+      "fast": { "ms": 150, "css": "150ms" },
+      "normal": { "ms": 300, "css": "300ms" },
+      "slow": { "ms": 500, "css": "500ms" },
+      "slower": { "ms": 800, "css": "800ms" }
+    },
+    "easing": {
+      "default": { "value": "cubic-bezier(0.4, 0, 0.2, 1)", "tailwind": "ease-out" },
+      "bounce": { "value": "cubic-bezier(0.34, 1.56, 0.64, 1)" },
+      "spring": { "value": "cubic-bezier(0.175, 0.885, 0.32, 1.275)" }
+    },
+    "stagger": {
+      "default": "0.1s",
+      "slow": "0.15s"
+    }
+  },
+  "breakpoints": {
+    "sm": { "px": 640, "tailwind": "sm:" },
+    "md": { "px": 768, "tailwind": "md:" },
+    "lg": { "px": 1024, "tailwind": "lg:" },
+    "xl": { "px": 1280, "tailwind": "xl:" },
+    "2xl": { "px": 1536, "tailwind": "2xl:" }
+  },
+  "customUtilities": {
+    "chessboard": {
+      "darkSquare": "#1E293B",
+      "lightSquare": "#CBD5E1",
+      "borderRadius": "12px"
+    },
+    "scrollbar": {
+      "definition": ".custom-scrollbar::-webkit-scrollbar { width: 6px; } .custom-scrollbar::-webkit-scrollbar-track { background: transparent; } .custom-scrollbar::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.1); border-radius: 999px; } .custom-scrollbar::-webkit-scrollbar-thumb:hover { background: rgba(255,255,255,0.2); }"
+    },
+    "keyframes": {
+      "fadeIn": {
+        "definition": "@keyframes fade-in { from { opacity: 0; transform: translateY(4px); } to { opacity: 1; transform: translateY(0); } }",
+        "class": ".animate-fade-in { animation: fade-in 0.3s ease-out forwards; }"
+      },
+      "pulseGold": {
+        "definition": "@keyframes pulse-gold { 0%, 100% { box-shadow: 0 0 0 0 rgba(245,166,35,0.4); } 50% { box-shadow: 0 0 0 6px rgba(245,166,35,0); } }",
+        "class": ".animate-pulse-gold { animation: pulse-gold 1.5s cubic-bezier(0.4,0,0.6,1) infinite; }"
+      }
+    }
+  }
+}
