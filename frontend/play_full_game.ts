@@ -5,7 +5,7 @@ import fs from 'fs';
 
 const abiPath = './abi/WagerChessEngine.json';
 const WagerChessEngineABI = JSON.parse(fs.readFileSync(abiPath, 'utf8'));
-const WAGER_CHESS_ENGINE_ADDRESS = "0xF2c1e9a198A11eAD70bF7C9d054cFc3AD460AEF2";
+const WAGER_CHESS_ENGINE_ADDRESS = "0x0b0a6a9a49Ab20C18C14a84964a82F520c5aF874";
 
 const account1 = privateKeyToAccount('0x6fc13a20c0df8436b369076e8560c0ebeda32ff512b1ab5b69eddb3507f93b29');
 const account2 = privateKeyToAccount('0x0000000000000000000000000000000000000000000000000000000000000002');

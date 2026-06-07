@@ -20,7 +20,7 @@ contract WagerChessEngineTest is Test {
         uint256 gameId = engine.createGame{value: 0.01 ether}(bob);
         vm.stopPrank();
 
-        ( , address w, address b, uint256 wager, uint256 pot, , , bool active, ) = engine.games(gameId);
+        ( , address w, address b, uint256 wager, uint256 pot, , , bool active, ,) = engine.games(gameId);
         assertEq(w, alice);
         assertEq(b, bob);
         assertEq(wager, 0.01 ether);
@@ -31,7 +31,7 @@ contract WagerChessEngineTest is Test {
         engine.joinGame{value: 0.01 ether}(gameId);
         vm.stopPrank();
 
-        ( , , , , pot, , , , ) = engine.games(gameId);
+        ( , , , , pot, , , , ,) = engine.games(gameId);
         assertEq(pot, 0.02 ether);
     }
 

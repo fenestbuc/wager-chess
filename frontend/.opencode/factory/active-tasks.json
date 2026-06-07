@@ -23,21 +23,21 @@
     {
       "id": "ui-001",
       "agent": "ui-designer",
-      "description": "Design component interfaces and Tailwind configs for premium Web3 UI",
-      "status": "blocked",
+      "description": "Finalize Tailwind CSS config and glassmorphism utilities per theme-spec",
+      "status": "in_progress",
       "branch": "factory/premium-web3-ui/ui-designer",
-      "inputs": [".opencode/factory/ui-component-registry.json", ".opencode/factory/theme-spec.json"],
-      "outputs": ["app/globals.css (updated)", "app/page.tsx (redesigned)", "app/play/page.tsx (redesigned)", "app/components/ChessGame.tsx (enhanced dashboard)"],
+      "inputs": [".opencode/factory/theme-spec.json", ".opencode/factory/ui-component-registry.json"],
+      "outputs": ["app/globals.css (updated with theme tokens)", "app/components/GlassCard.tsx", "app/components/GradientButton.tsx"],
       "depends_on": ["arch-001"]
     },
     {
       "id": "front-001",
       "agent": "frontend",
-      "description": "Implement premium Web3 UI components with framer-motion and lucide-react",
-      "status": "blocked",
+      "description": "Implement all premium Web3 UI components per contracts",
+      "status": "in_progress",
       "branch": "factory/premium-web3-ui/frontend",
-      "inputs": [".opencode/factory/ui-component-registry.json", ".opencode/factory/theme-spec.json", "ui-designer components"],
-      "outputs": ["Build-passing Next.js app with premium UI"],
+      "inputs": [".opencode/factory/theme-spec.json", ".opencode/factory/ui-component-registry.json", "ui-designer outputs"],
+      "outputs": ["app/page.tsx", "app/play/page.tsx", "app/components/ChessGame.tsx", "app/components/RulesCard.tsx", "app/components/FeeIndicator.tsx", "app/components/TurnIndicator.tsx", "app/components/MoveHistory.tsx", "app/components/GameStatusPanel.tsx", "Build-passing Next.js app"],
       "depends_on": ["ui-001"]
     },
     {

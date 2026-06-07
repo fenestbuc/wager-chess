@@ -48,11 +48,25 @@ contract WagerChessEngine {
         uint256 totalFeesCollected;
         bool active;
         bool payoutsSettled;
+        uint256 lastMoveTimestamp;
     }
 
+    
     /*//////////////////////////////////////////////////////////////
                                  STATE
     //////////////////////////////////////////////////////////////*/
+    address public owner;
+    uint256 public claimableFees;
+    
+    constructor() {
+        owner = msg.sender;
+    }
+
+    modifier onlyOwner() {
+        if (msg.sender != owner) revert("Not owner");
+        _;
+    }
+
     uint256 public nextGameId;
     mapping(uint256 => WagerGame) public games;
     mapping(uint256 => mapping(address => uint256)) public pendingWithdrawals; // gameId => player => amount
@@ -82,6 +96,7 @@ contract WagerChessEngine {
         wg.totalPot = msg.value;
         wg.moveFee = DEFAULT_MOVE_FEE;
         wg.active = true;
+        wg.lastMoveTimestamp = block.timestamp;
 
         emit GameCreated(gameId, msg.sender, opponent, msg.value);
     }
@@ -97,6 +112,7 @@ contract WagerChessEngine {
         if (msg.value != wg.wagerAmount) revert InvalidWager();
 
         wg.totalPot += msg.value;
+        wg.lastMoveTimestamp = block.timestamp;
     }
 
     /*//////////////////////////////////////////////////////////////
@@ -156,6 +172,8 @@ contract WagerChessEngine {
         if (msg.value < requiredFee) revert MoveFeeRequired();
 
         wg.totalFeesCollected += requiredFee;
+        claimableFees += requiredFee;
+        wg.lastMoveTimestamp = block.timestamp;
         uint256 refund = msg.value - requiredFee;
 
         if (refund > 0) {
@@ -238,6 +256,38 @@ contract WagerChessEngine {
         if (!ok) revert TransferFailed();
 
         emit GameEnded(gameId, address(0), 3);
+    }
+
+    
+    /*//////////////////////////////////////////////////////////////
+                             ADMIN & TIMEOUT
+    //////////////////////////////////////////////////////////////*/
+
+    function withdrawProtocolFees() external onlyOwner {
+        uint256 amount = claimableFees;
+        if (amount == 0) revert NoPayoutAvailable();
+        claimableFees = 0;
+        (bool ok, ) = owner.call{value: amount}("");
+        if (!ok) revert TransferFailed();
+    }
+
+    function claimTimeout(uint256 gameId) external {
+        WagerGame storage wg = games[gameId];
+        if (!wg.active) revert GameNotActive();
+        
+        bool whiteTurn = wg.chess.whiteToMove;
+        address expected = whiteTurn ? wg.whitePlayer : wg.blackPlayer;
+        address claimer = whiteTurn ? wg.blackPlayer : wg.whitePlayer;
+        
+        if (msg.sender != claimer) revert NotYourTurn();
+        if (block.timestamp < wg.lastMoveTimestamp + 1 hours) revert GameNotOver();
+        
+        wg.active = false;
+        uint256 payout = wg.totalPot - wg.totalFeesCollected;
+        pendingWithdrawals[gameId][claimer] = payout;
+        wg.payoutsSettled = true;
+        
+        emit GameEnded(gameId, claimer, whiteTurn ? 2 : 1);
     }
 
     /*//////////////////////////////////////////////////////////////

@@ -3,19 +3,28 @@
 import { useState, useCallback, useMemo } from "react";
 import { Chess } from "chess.js";
 import { Chessboard } from "react-chessboard";
+import { useSearchParams } from "next/navigation";
+import { useWatchContractEvent } from "wagmi";
 import { useAccount, useWriteContract, useReadContract, usePublicClient } from "wagmi";
 import { parseEther } from "viem";
 import WagerChessEngineABI from "../../abi/WagerChessEngine.json";
 import { motion, AnimatePresence } from "framer-motion";
 import { Info, History, Shield, PlayCircle, LogIn, CheckCircle2 } from "lucide-react";
 
-export const WAGER_CHESS_ENGINE_ADDRESS = "0xF2c1e9a198A11eAD70bF7C9d054cFc3AD460AEF2";
+export const WAGER_CHESS_ENGINE_ADDRESS = "0x0b0a6a9a49Ab20C18C14a84964a82F520c5aF874";
 
 // Convert algebraic e2 to index 0-63
 function squareToIndex(sq: string): number {
   const file = sq.charCodeAt(0) - 'a'.charCodeAt(0);
   const rank = parseInt(sq[1]) - 1;
   return rank * 8 + file;
+}
+
+// Convert index 0-63 to algebraic
+function indexToSquare(idx: number): string {
+  const file = String.fromCharCode('a'.charCodeAt(0) + (idx % 8));
+  const rank = Math.floor(idx / 8) + 1;
+  return file + rank;
 }
 
 export function ChessGame() {
