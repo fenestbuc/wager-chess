@@ -1,0 +1,437 @@
+{
+  "version": "1.0.0",
+  "project": "wager-chess",
+  "components": [
+    {
+      "name": "GlassCard",
+      "file": "app/components/GlassCard.tsx",
+      "type": "component",
+      "isNew": true,
+      "description": "Reusable glassmorphism wrapper. Provides the premium translucent card look used across the app.",
+      "props": [
+        { "name": "children", "type": "React.ReactNode", "required": true, "description": "Card content." },
+        { "name": "className", "type": "string", "required": false, "description": "Additional Tailwind classes." },
+        { "name": "hoverGlow", "type": "boolean", "required": false, "default": false, "description": "Adds a gold glow on hover." },
+        { "name": "border", "type": "boolean", "required": false, "default": true, "description": "Renders the glass border." },
+        { "name": "padding", "type": "'none' | 'sm' | 'md' | 'lg'", "required": false, "default": "md", "description": "Internal padding size." }
+      ],
+      "variants": [
+        {
+          "name": "default",
+          "tailwindClasses": "relative overflow-hidden rounded-2xl bg-surface/60 backdrop-blur-xl backdrop-saturate-150 border border-white/[0.06]",
+          "description": "Standard glass card."
+        },
+        {
+          "name": "hoverGlowActive",
+          "tailwindClasses": "hover:shadow-[0_0_30px_rgba(245,166,35,0.15)] hover:border-gold-500/30 transition-all duration-300",
+          "description": "Applied when hoverGlow is true."
+        }
+      ],
+      "styling": {
+        "innerOverlay": "absolute inset-0 bg-gradient-to-br from-white/[0.03] to-transparent pointer-events-none"
+      }
+    },
+    {
+      "name": "GradientButton",
+      "file": "app/components/GradientButton.tsx",
+      "type": "component",
+      "isNew": true,
+      "description": "Primary CTA button with Kubar Gold gradient and motion interactions.",
+      "props": [
+        { "name": "children", "type": "React.ReactNode", "required": true },
+        { "name": "variant", "type": "'primary' | 'secondary' | 'ghost'", "required": false, "default": "primary" },
+        { "name": "size", "type": "'sm' | 'md' | 'lg'", "required": false, "default": "md" },
+        { "name": "disabled", "type": "boolean", "required": false, "default": false },
+        { "name": "loading", "type": "boolean", "required": false, "default": false },
+        { "name": "onClick", "type": "() => void", "required": false },
+        { "name": "className", "type": "string", "required": false },
+        { "name": "icon", "type": "string", "required": false, "description": "Lucide icon name to render left of the label." }
+      ],
+      "variants": [
+        {
+          "name": "primary",
+          "tailwindClasses": "group relative inline-flex items-center justify-center overflow-hidden rounded-xl bg-gradient-to-br from-gold-400 to-gold-600 px-6 py-3 text-sm font-bold text-black shadow-gold transition-all duration-300 hover:scale-[1.02] hover:shadow-gold-lg focus:outline-none focus:ring-2 focus:ring-gold-400 focus:ring-offset-2 focus:ring-offset-background disabled:opacity-50 disabled:cursor-not-allowed",
+          "lucideIcon": "Loader2",
+          "iconClasses": "mr-2 h-4 w-4 animate-spin"
+        },
+        {
+          "name": "secondary",
+          "tailwindClasses": "inline-flex items-center justify-center rounded-xl border border-gold-500/30 bg-transparent px-6 py-3 text-sm font-semibold text-gold-400 shadow-none transition-all duration-300 hover:bg-gold-500/10 hover:border-gold-500/50",
+          "description": "Outlined gold button."
+        },
+        {
+          "name": "ghost",
+          "tailwindClasses": "inline-flex items-center justify-center rounded-xl bg-transparent px-6 py-3 text-sm font-semibold text-zinc-300 transition-all duration-300 hover:bg-white/5 hover:text-white",
+          "description": "Subtle button for low-priority actions."
+        },
+        {
+          "name": "sizeSm",
+          "tailwindClasses": "px-4 py-2 text-xs",
+          "description": "Small size override."
+        },
+        {
+          "name": "sizeMd",
+          "tailwindClasses": "px-6 py-3 text-sm",
+          "description": "Medium size override."
+        },
+        {
+          "name": "sizeLg",
+          "tailwindClasses": "px-8 py-4 text-base",
+          "description": "Large size override."
+        }
+      ],
+      "framerMotion": {
+        "whileTap": { "scale": 0.98 }
+      },
+      "lucideIcons": ["Loader2"],
+      "dependencies": ["lucide-react", "framer-motion"]
+    },
+    {
+      "name": "RulesCard",
+      "file": "app/components/RulesCard.tsx",
+      "type": "component",
+      "isNew": true,
+      "description": "Interactive card for the Rules of Engagement section. Uses GlassCard and framer-motion.",
+      "props": [
+        { "name": "icon", "type": "string", "required": true, "description": "Lucide icon name. Recommended: 'Wallet', 'Zap', 'AlertTriangle', 'Trophy'." },
+        { "name": "title", "type": "string", "required": true },
+        { "name": "description", "type": "string", "required": true },
+        { "name": "feeData", "type": "Array<{ piece: string; cost: string }>", "required": false, "description": "Optional fee breakdown list." },
+        { "name": "index", "type": "number", "required": true, "description": "Stagger index for scroll-reveal animation." },
+        { "name": "accent", "type": "'gold' | 'red' | 'green'", "required": false, "default": "gold", "description": "Color accent for the icon badge." }
+      ],
+      "styling": {
+        "wrapperClasses": "glass rounded-2xl p-6 sm:p-8",
+        "iconContainerClasses": "flex-shrink-0 w-10 h-10 rounded-lg bg-gradient-to-br from-gold-500/20 to-gold-600/10 border border-gold-500/20 flex items-center justify-center text-gold-400",
+        "titleClasses": "text-lg font-semibold text-foreground",
+        "descriptionClasses": "text-sm text-muted leading-relaxed",
+        "feeListClasses": "mt-3 space-y-1.5 text-sm font-mono"
+      },
+      "framerMotion": {
+        "initial": { "opacity": 0, "y": 20 },
+        "whileInView": { "opacity": 1, "y": 0 },
+        "viewport": { "once": true, "margin": "-50px" },
+        "transition": { "duration": 0.5, "delay": 0.1, "ease": [0.4, 0, 0.2, 1] },
+        "whileHover": { "y": -4, "boxShadow": "0 0 20px rgba(245, 166, 35, 0.25)", "transition": { "duration": 0.2 } }
+      },
+      "lucideIcons": ["Wallet", "Zap", "AlertTriangle", "Trophy"],
+      "dependencies": ["GlassCard", "lucide-react", "framer-motion"]
+    },
+    {
+      "name": "FeeIndicator",
+      "file": "app/components/FeeIndicator.tsx",
+      "type": "component",
+      "isNew": true,
+      "description": "Floating tooltip that shows the cost of a move before it is committed. Appears when a piece is selected.",
+      "props": [
+        { "name": "pieceType", "type": "'pawn' | 'knight' | 'bishop' | 'rook' | 'queen' | 'king'", "required": true },
+        { "name": "pieceSymbol", "type": "string", "required": true, "description": "Unicode chess piece character (e.g., '♛')." },
+        { "name": "baseFee", "type": "string", "required": true, "description": "Base move fee in MON (e.g., '0.0009 MON')." },
+        { "name": "isCheck", "type": "boolean", "required": false, "default": false, "description": "Whether the move results in check." },
+        { "name": "checkPenalty", "type": "string", "required": false, "default": "0.0005 MON", "description": "Additional fee for check." },
+        { "name": "totalFee", "type": "string", "required": true, "description": "Total fee to display." },
+        { "name": "isVisible", "type": "boolean", "required": false, "default": false },
+        { "name": "position", "type": "{ x: number; y: number }", "required": false, "description": "Absolute coordinates for tooltip placement." }
+      ],
+      "variants": [
+        {
+          "name": "default",
+          "tailwindClasses": "absolute z-50 pointer-events-none glass px-4 py-3 rounded-xl border border-gold/20 shadow-gold animate-fade-in"
+        },
+        {
+          "name": "checkWarning",
+          "tailwindClasses": "text-red-400 flex items-center gap-1 text-xs mt-1",
+          "lucideIcon": "AlertTriangle"
+        }
+      ],
+      "framerMotion": {
+        "initial": { "opacity": 0, "scale": 0.9 },
+        "animate": { "opacity": 1, "scale": 1 },
+        "exit": { "opacity": 0, "scale": 0.9 },
+        "transition": { "duration": 0.15 }
+      },
+      "lucideIcons": ["Coins", "AlertTriangle"],
+      "dependencies": ["GlassCard", "lucide-react", "framer-motion"]
+    },
+    {
+      "name": "TurnIndicator",
+      "file": "app/components/TurnIndicator.tsx",
+      "type": "component",
+      "isNew": true,
+      "description": "Pulsing dot indicator showing whose turn it is and whether it is the local player's turn.",
+      "props": [
+        { "name": "currentTurn", "type": "'white' | 'black'", "required": true },
+        { "name": "isYourTurn", "type": "boolean", "required": true },
+        { "name": "isActive", "type": "boolean", "required": false, "default": true }
+      ],
+      "variants": [
+        {
+          "name": "yourTurn",
+          "tailwindClasses": "relative flex h-3 w-3",
+          "dotClasses": "relative inline-flex rounded-full h-3 w-3 bg-gold-500",
+          "pulseClasses": "absolute inline-flex h-full w-full animate-ping rounded-full bg-gold-400 opacity-75",
+          "textClasses": "text-sm font-medium text-gold-400"
+        },
+        {
+          "name": "opponentTurn",
+          "tailwindClasses": "relative flex h-3 w-3",
+          "dotClasses": "relative inline-flex rounded-full h-3 w-3 bg-zinc-500",
+          "textClasses": "text-sm font-medium text-zinc-400"
+        },
+        {
+          "name": "inactive",
+          "tailwindClasses": "relative flex h-3 w-3",
+          "dotClasses": "relative inline-flex rounded-full h-3 w-3 bg-zinc-700",
+          "textClasses": "text-sm font-medium text-zinc-600"
+        }
+      ],
+      "styling": {
+        "containerClasses": "flex items-center gap-2"
+      }
+    },
+    {
+      "name": "MoveHistory",
+      "file": "app/components/MoveHistory.tsx",
+      "type": "component",
+      "isNew": true,
+      "description": "Scrollable, stylized algebraic notation list.",
+      "props": [
+        { "name": "moves", "type": "string[]", "required": true, "description": "Array of SAN move strings." },
+        { "name": "currentMoveIndex", "type": "number", "required": false, "default": -1, "description": "Currently selected move index." },
+        { "name": "onSelectMove", "type": "(index: number) => void", "required": false, "description": "Callback when a move row is clicked." }
+      ],
+      "styling": {
+        "containerClasses": "glass rounded-xl p-4 flex flex-col gap-3 custom-scrollbar",
+        "headerClasses": "text-xs font-semibold text-zinc-500 uppercase tracking-wider flex items-center gap-2",
+        "listClasses": "flex flex-col gap-1 max-h-64 overflow-y-auto pr-2",
+        "rowClasses": "grid grid-cols-[2rem_1fr_1fr] gap-2 items-center text-sm font-mono text-zinc-300 hover:bg-surface-raised/50 rounded px-2 py-1.5 transition-colors cursor-pointer",
+        "selectedRowClasses": "bg-gold-500/10 border border-gold-500/20 text-gold-300",
+        "moveNumberClasses": "text-zinc-500 text-right",
+        "whiteMoveClasses": "text-zinc-200",
+        "blackMoveClasses": "text-zinc-400"
+      },
+      "lucideIcons": ["History"],
+      "dependencies": ["lucide-react"]
+    },
+    {
+      "name": "GameStatusPanel",
+      "file": "app/components/GameStatusPanel.tsx",
+      "type": "component",
+      "isNew": true,
+      "description": "Top panel above the board showing Game ID, pot size, material advantage, turn indicator, and match status.",
+      "props": [
+        { "name": "gameId", "type": "string | bigint", "required": true },
+        { "name": "potSize", "type": "string", "required": true },
+        { "name": "materialAdvantage", "type": "number", "required": false, "description": "Positive for White, negative for Black." },
+        { "name": "currentTurn", "type": "'white' | 'black'", "required": true },
+        { "name": "isYourTurn", "type": "boolean", "required": true },
+        { "name": "whitePlayer", "type": "string", "required": false },
+        { "name": "blackPlayer", "type": "string", "required": false },
+        { "name": "status", "type": "'active' | 'check' | 'checkmate' | 'stalemate'", "required": false, "default": "active" }
+      ],
+      "styling": {
+        "wrapperClasses": "w-full glass rounded-xl px-5 py-4 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 mb-6",
+        "gameIdTagClasses": "px-2 py-1 rounded-md bg-surface-raised border border-border text-xs font-mono text-zinc-400",
+        "potLabelClasses": "text-xs text-zinc-500 uppercase tracking-wider",
+        "potValueClasses": "text-2xl font-bold text-gold-400",
+        "materialPositiveClasses": "text-xs font-mono text-green-400",
+        "materialNegativeClasses": "text-xs font-mono text-red-400",
+        "statusBadgeActiveClasses": "hidden",
+        "statusBadgeCheckClasses": "flex items-center gap-1 px-2 py-1 rounded-full bg-red-500/10 border border-red-500/20 text-xs font-medium text-red-400"
+      },
+      "lucideIcons": ["Sword", "Users"],
+      "dependencies": ["TurnIndicator", "GlassCard", "lucide-react"]
+    },
+    {
+      "name": "LandingPage",
+      "file": "app/page.tsx",
+      "type": "page",
+      "isNew": false,
+      "description": "Premium landing page with hero, interactive rules, and CTAs.",
+      "sections": [
+        {
+          "name": "Header",
+          "styling": "sticky top-0 z-50 glass border-b border-white/[0.06]",
+          "components": ["ConnectWallet"]
+        },
+        {
+          "name": "HeroSection",
+          "styling": "relative px-4 py-24 sm:px-6 lg:px-8 text-center overflow-hidden bg-hero-gradient",
+          "components": ["GradientButton", "GlassCard"]
+        },
+        {
+          "name": "RulesSection",
+          "styling": "mx-auto max-w-6xl px-4 py-20 sm:px-6 lg:px-8 grid grid-cols-1 md:grid-cols-2 gap-6",
+          "components": ["RulesCard"]
+        },
+        {
+          "name": "Footer",
+          "styling": "border-t border-white/[0.06] py-8 mt-12 text-sm text-zinc-500"
+        }
+      ],
+      "framerMotion": {
+        "heroText": {
+          "initial": { "opacity": 0, "y": 30 },
+          "animate": { "opacity": 1, "y": 0 },
+          "transition": { "duration": 0.8, "ease": [0.4, 0, 0.2, 1] }
+        },
+        "heroSubtitle": {
+          "initial": { "opacity": 0, "y": 20 },
+          "animate": { "opacity": 1, "y": 0 },
+          "transition": { "duration": 0.8, "delay": 0.15, "ease": [0.4, 0, 0.2, 1] }
+        },
+        "heroButtons": {
+          "initial": { "opacity": 0, "y": 20 },
+          "animate": { "opacity": 1, "y": 0 },
+          "transition": { "duration": 0.8, "delay": 0.3, "ease": [0.4, 0, 0.2, 1] }
+        },
+        "rulesStagger": {
+          "initial": "hidden",
+          "whileInView": "visible",
+          "viewport": { "once": true, "margin": "-100px" }
+        },
+        "rulesItemVariants": {
+          "hidden": { "opacity": 0, "y": 20 },
+          "visible": { "opacity": 1, "y": 0, "transition": { "duration": 0.5, "staggerChildren": 0.1 } }
+        }
+      },
+      "lucideIcons": ["ChevronDown"],
+      "dependencies": ["GradientButton", "RulesCard", "GlassCard", "framer-motion", "lucide-react"]
+    },
+    {
+      "name": "ChessGame",
+      "file": "app/components/ChessGame.tsx",
+      "type": "component",
+      "isNew": false,
+      "description": "Enhanced main game component with dashboard layout, fee indicator, turn indicator, and move history.",
+      "props": [],
+      "layout": {
+        "containerClasses": "grid grid-cols-1 lg:grid-cols-12 gap-6",
+        "leftColumn": {
+          "classes": "lg:col-span-8 flex flex-col gap-4",
+          "children": ["GameStatusPanel", "ChessboardWrapper", "FeeIndicatorOverlay"]
+        },
+        "rightColumn": {
+          "classes": "lg:col-span-4 flex flex-col gap-4",
+          "children": ["ControlsCard", "MoveHistory", "DashboardStats"]
+        }
+      },
+      "styling": {
+        "boardWrapperClasses": "relative rounded-xl overflow-hidden border border-white/[0.06] shadow-2xl",
+        "controlsCardClasses": "glass rounded-xl p-5 flex flex-col gap-4",
+        "inputClasses": "flex-1 px-3 py-2 bg-surface-raised border border-white/[0.06] rounded-lg text-foreground text-sm focus:outline-none focus:ring-2 focus:ring-gold-500/50 focus:border-transparent placeholder-zinc-500",
+        "primaryButtonOverride": "GradientButton primary variant",
+        "secondaryButtonOverride": "GradientButton secondary variant"
+      },
+      "chessboardOverrides": {
+        "customDarkSquareStyle": { "backgroundColor": "#1E293B" },
+        "customLightSquareStyle": { "backgroundColor": "#CBD5E1" },
+        "customBoardStyle": { "borderRadius": "0px" }
+      },
+      "dependencies": ["GameStatusPanel", "FeeIndicator", "TurnIndicator", "MoveHistory", "GradientButton", "GlassCard", "Dashboard"],
+      "notes": [
+        "Add local state for hoveredPiece and hoveredSquare to drive FeeIndicator visibility.",
+        "On piece selection (onPieceClick or onDragStart if available from react-chessboard), compute fee via publicClient.readContract and display FeeIndicator.",
+        "On piece drop, hide FeeIndicator and proceed with transaction."
+      ]
+    },
+    {
+      "name": "Dashboard",
+      "file": "app/components/Dashboard.tsx",
+      "type": "component",
+      "isNew": false,
+      "description": "Stats dashboard component styled with the new premium theme.",
+      "props": [
+        { "name": "potSize", "type": "string", "required": false, "default": "0.00" },
+        { "name": "personalSpend", "type": "string", "required": false, "default": "0.00" },
+        { "name": "moveCount", "type": "number", "required": false },
+        { "name": "totalFeesPaid", "type": "string", "required": false },
+        { "name": "gameStatus", "type": "'waiting' | 'active' | 'finished'", "required": false }
+      ],
+      "styling": {
+        "wrapperClasses": "glass rounded-xl p-6",
+        "statCardClasses": "rounded-lg bg-surface-raised border border-white/[0.06] p-4",
+        "potValueClasses": "text-2xl font-bold text-gold-400",
+        "labelClasses": "text-sm font-medium text-zinc-400"
+      },
+      "dependencies": ["GlassCard"]
+    }
+  ],
+  "newFiles": [
+    "app/components/GlassCard.tsx",
+    "app/components/GradientButton.tsx",
+    "app/components/RulesCard.tsx",
+    "app/components/FeeIndicator.tsx",
+    "app/components/TurnIndicator.tsx",
+    "app/components/MoveHistory.tsx",
+    "app/components/GameStatusPanel.tsx"
+  ],
+  "existingFilesToModify": [
+    {
+      "path": "app/globals.css",
+      "description": "Update CSS variable definitions and add custom utilities for glassmorphism, gold palette, scrollbars, and keyframes.",
+      "changes": [
+        "Replace --background with #050507, --foreground with #F2F2F2.",
+        "Add --primary (#F5A623), --primary-hover (#D48A1A), --secondary (#8B5CF6), --secondary-hover (#7C3AED).",
+        "Add full --gold-50 through --gold-900 palette.",
+        "Update --surface to #0A0A0D, --surface-raised to #131316, --border to rgba(255,255,255,0.08).",
+        "Add .glass utility class with backdrop-blur, saturate, background, border, and box-shadow.",
+        "Add .shadow-gold and .shadow-gold-lg utilities.",
+        "Add .custom-scrollbar utility for thin styled scrollbars.",
+        "Add @keyframes fade-in and @keyframes pulse-gold with matching .animate-* classes."
+      ]
+    },
+    {
+      "path": "app/layout.tsx",
+      "description": "Ensure font variables remain compatible. No structural changes required.",
+      "changes": []
+    },
+    {
+      "path": "app/page.tsx",
+      "description": "Refactor landing page to use new themed components and framer-motion.",
+      "changes": [
+        "Replace hero gradient with theme-spec hero gradient (radial gold).",
+        "Wrap Rules items in RulesCard components.",
+        "Replace raw <Link> and <button> CTAs with GradientButton components (primary and secondary variants).",
+        "Add framer-motion scroll animations to hero text, buttons, and rules grid.",
+        "Update all color references to use new CSS variables (gold accents, surfaces, borders).",
+        "Update header to use glass utility class.",
+        "Replace inline SVG logo with a lucide icon (e.g., 'Swords') or keep existing SVG but recolor to primary."
+      ]
+    },
+    {
+      "path": "app/play/page.tsx",
+      "description": "Change from single-column centered layout to a full dashboard grid.",
+      "changes": [
+        "Replace max-w-3xl centered wrapper with max-w-7xl grid layout (grid-cols-1 lg:grid-cols-12 gap-6).",
+        "Left column (lg:col-span-8) for GameStatusPanel + ChessboardWrapper + FeeIndicatorOverlay.",
+        "Right column (lg:col-span-4) for ControlsCard + MoveHistory + DashboardStats.",
+        "Keep sticky header styling consistent with landing page (glass border-b)."
+      ]
+    },
+    {
+      "path": "app/components/ChessGame.tsx",
+      "description": "Integrate new sub-components and adopt dashboard layout.",
+      "changes": [
+        "Restructure render into two-column grid as specified in ChessGame layout.",
+        "Add GameStatusPanel at the top of the left column, passing gameId, potSize, currentTurn, etc.",
+        "Integrate FeeIndicator as an absolutely positioned overlay inside the board wrapper.",
+        "Replace inline move history with MoveHistory component.",
+        "Restyle control inputs and buttons using GradientButton and GlassCard utilities.",
+        "Update Chessboard square colors to #1E293B (dark) and #CBD5E1 (light).",
+        "Add on-piece selection logic (e.g., onPieceClick from react-chessboard) to pre-calculate and display move fees before drop."
+      ]
+    },
+    {
+      "path": "app/components/Dashboard.tsx",
+      "description": "Update styling to match premium theme and accept new optional props.",
+      "changes": [
+        "Wrap outer container with glass styling.",
+        "Update stat cards to use surface-raised and new border color (border-white/[0.06]).",
+        "Change pot size text color to text-gold-400.",
+        "Add display for moveCount and totalFeesPaid props if provided.",
+        "Accept new optional props: moveCount, totalFeesPaid, gameStatus."
+      ]
+    }
+  ]
+}
