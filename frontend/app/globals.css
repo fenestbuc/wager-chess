@@ -3,13 +3,29 @@
 @tailwind utilities;
 
 :root {
-  --background: #0f172a;
-  --foreground: #f8fafc;
-  --accent: #F59E0B;
-  --accent-hover: #FBBF24;
-  --surface: rgba(30, 41, 59, 0.7);
-  --surface-raised: rgba(51, 65, 85, 0.8);
-  --border: rgba(148, 163, 184, 0.2);
+  --background: #050507;
+  --foreground: #F2F2F2;
+  --muted: #A1A1AA;
+  --primary: #F5A623;
+  --primary-hover: #D48A1A;
+  --secondary: #8B5CF6;
+  --secondary-hover: #7C3AED;
+  --accent: #3B82F6;
+  --surface: #0A0A0D;
+  --surface-raised: #131316;
+  --border: rgba(255, 255, 255, 0.08);
+
+  /* Gold Palette */
+  --gold-50: #FFF9EB;
+  --gold-100: #FFEFC2;
+  --gold-200: #FFE094;
+  --gold-300: #FFD166;
+  --gold-400: #F5A623;
+  --gold-500: #E09520;
+  --gold-600: #C07E1B;
+  --gold-700: #9F6716;
+  --gold-800: #7F5012;
+  --gold-900: #5F3A0D;
 }
 
 body {
@@ -23,10 +39,68 @@ h1, h2, h3, h4, h5, h6, .font-heading {
   font-family: var(--font-orbitron), sans-serif;
 }
 
-.glass-card {
-  background: var(--surface);
-  backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
-  border: 1px solid var(--border);
-  box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+@layer components {
+  .glass {
+    background: rgba(10, 10, 13, 0.65);
+    backdrop-filter: blur(16px) saturate(180%);
+    -webkit-backdrop-filter: blur(16px) saturate(180%);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: 16px;
+    box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37), inset 0 0 0 1px rgba(255, 255, 255, 0.05);
+  }
+
+  .shadow-gold {
+    box-shadow: 0 0 20px rgba(245, 166, 35, 0.25);
+  }
+
+  .shadow-gold-lg {
+    box-shadow: 0 0 40px rgba(245, 166, 35, 0.35);
+  }
+
+  .custom-scrollbar::-webkit-scrollbar {
+    width: 6px;
+  }
+
+  .custom-scrollbar::-webkit-scrollbar-track {
+    background: transparent;
+  }
+
+  .custom-scrollbar::-webkit-scrollbar-thumb {
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 9999px;
+  }
+
+  .custom-scrollbar::-webkit-scrollbar-thumb:hover {
+    background: rgba(255, 255, 255, 0.2);
+  }
+}
+
+@layer utilities {
+  @keyframes fade-in {
+    from {
+      opacity: 0;
+      transform: translateY(4px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  .animate-fade-in {
+    animation: fade-in 0.3s ease-out forwards;
+  }
+
+  @keyframes pulse-gold {
+    0%, 100% {
+      box-shadow: 0 0 0 0 rgba(245, 166, 35, 0.4);
+    }
+    50% {
+      box-shadow: 0 0 0 6px rgba(245, 166, 35, 0);
+    }
+  }
+
+  .animate-pulse-gold {
+    animation: pulse-gold 1.5s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+  }
 }

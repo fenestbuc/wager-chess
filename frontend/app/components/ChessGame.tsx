@@ -1,4 +1,5 @@
 "use client";
+import { MoveHistory } from "./MoveHistory";
 
 import { useState, useCallback, useMemo } from "react";
 import { Chess } from "chess.js";

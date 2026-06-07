@@ -2,10 +2,10 @@
   "run_id": "feat-premium-web3-ui-20260607",
   "branch_prefix": "factory/premium-web3-ui",
   "lock": {
-    "locked": false,
-    "owner": null,
-    "since": null,
-    "reason": null
+    "locked": true,
+    "owner": "orchestrator",
+    "since": "2026-06-07T16:30:00Z",
+    "reason": "Dispatching parallel general implementation agents"
   },
   "stash_ref": "factory-auto-stash-20260607-160936",
   "tasks": [
@@ -24,31 +24,63 @@
       "id": "ui-001",
       "agent": "ui-designer",
       "description": "Finalize Tailwind CSS config and glassmorphism utilities per theme-spec",
-      "status": "in_progress",
+      "status": "failed",
       "branch": "factory/premium-web3-ui/ui-designer",
       "inputs": [".opencode/factory/theme-spec.json", ".opencode/factory/ui-component-registry.json"],
       "outputs": ["app/globals.css (updated with theme tokens)", "app/components/GlassCard.tsx", "app/components/GradientButton.tsx"],
-      "depends_on": ["arch-001"]
+      "depends_on": ["arch-001"],
+      "failure_reason": "Agent inherited stale permissions that only allow src/app/** paths. Project uses app/ directly. Config was updated but requires opencode restart."
     },
     {
       "id": "front-001",
       "agent": "frontend",
       "description": "Implement all premium Web3 UI components per contracts",
-      "status": "in_progress",
+      "status": "failed",
       "branch": "factory/premium-web3-ui/frontend",
       "inputs": [".opencode/factory/theme-spec.json", ".opencode/factory/ui-component-registry.json", "ui-designer outputs"],
       "outputs": ["app/page.tsx", "app/play/page.tsx", "app/components/ChessGame.tsx", "app/components/RulesCard.tsx", "app/components/FeeIndicator.tsx", "app/components/TurnIndicator.tsx", "app/components/MoveHistory.tsx", "app/components/GameStatusPanel.tsx", "Build-passing Next.js app"],
-      "depends_on": ["ui-001"]
+      "depends_on": ["ui-001"],
+      "failure_reason": "Same permission issue as ui-001: agents inherited stale config with src/** paths only. Cannot edit app/ files without opencode restart."
+    },
+    {
+      "id": "impl-001",
+      "agent": "general",
+      "description": "Install deps, create shared primitives (GlassCard, GradientButton, utils) and update CSS/tailwind config",
+      "status": "in_progress",
+      "branch": "factory/premium-web3-ui/impl-primitives",
+      "inputs": [".opencode/factory/theme-spec.json", ".opencode/factory/ui-component-registry.json"],
+      "outputs": ["app/lib/utils.ts", "app/components/GlassCard.tsx", "app/components/GradientButton.tsx", "app/globals.css (updated)", "tailwind.config.ts (updated)", "clsx + tailwind-merge installed"],
+      "depends_on": ["arch-001"]
+    },
+    {
+      "id": "impl-002",
+      "agent": "general",
+      "description": "Create premium game UI components (RulesCard, GameStatusPanel, TurnIndicator, MoveHistory, FeeIndicator)",
+      "status": "in_progress",
+      "branch": "factory/premium-web3-ui/impl-gameui",
+      "inputs": [".opencode/factory/theme-spec.json", ".opencode/factory/ui-component-registry.json"],
+      "outputs": ["app/components/RulesCard.tsx", "app/components/GameStatusPanel.tsx", "app/components/TurnIndicator.tsx", "app/components/MoveHistory.tsx", "app/components/FeeIndicator.tsx"],
+      "depends_on": ["arch-001"]
+    },
+    {
+      "id": "impl-003",
+      "agent": "general",
+      "description": "Integrate all new components into existing pages (page.tsx, play/page.tsx, ChessGame.tsx, Dashboard.tsx)",
+      "status": "blocked",
+      "branch": "factory/premium-web3-ui/impl-integration",
+      "inputs": ["impl-001 outputs", "impl-002 outputs"],
+      "outputs": ["app/page.tsx", "app/play/page.tsx", "app/components/ChessGame.tsx", "app/components/Dashboard.tsx", "Build-passing Next.js app"],
+      "depends_on": ["impl-001", "impl-002"]
     },
     {
       "id": "int-001",
-      "agent": "integrator",
+      "agent": "general",
       "description": "Merge branches, validate build, wire components",
       "status": "blocked",
       "branch": "factory/premium-web3-ui/integrator",
-      "inputs": ["ui-designer outputs", "frontend outputs"],
+      "inputs": ["impl-001 outputs", "impl-002 outputs", "impl-003 outputs"],
       "outputs": ["Merged branch with passing build"],
-      "depends_on": ["ui-001", "front-001"]
+      "depends_on": ["impl-003"]
     },
     {
       "id": "sec-001",
